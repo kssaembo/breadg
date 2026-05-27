@@ -1,0 +1,6 @@
+{
+  "name": "풍요와 기근",
+  "description": "더 지니어스 '풍요와 기근' 게임을 교사용 PC 1대로 진행할 수 있는 2채널 분리형 웹 애플리케이션",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

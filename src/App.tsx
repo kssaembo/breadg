@@ -963,92 +963,62 @@ export default function App() {
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto w-full">
                             
                             {/* Abundance visual details */}
-                            <div className={`rounded-3xl border-2 p-8 text-center space-y-6 transition-all shadow-md ${
-                              lastLog.results.abundanceStatus === 'bankrupt'
-                                ? 'bg-rose-50/50 border-rose-300'
-                                : 'bg-emerald-50/50 border-emerald-300'
-                            }`}>
-                              <div className="space-y-1">
+                            <div className="rounded-3xl border-2 p-8 text-center space-y-6 transition-all shadow-md bg-emerald-50/50 border-emerald-300">
+                              <div className="space-y-2">
                                 <div className="flex items-center justify-center flex-wrap gap-1 min-h-[30px] mb-1">
                                   {Array.from({ length: Math.round(lastLog.breadSupply.abundance) }).map((_, i) => (
                                     <span key={i} className="text-2xl">🍞</span>
                                   ))}
                                 </div>
-                                <h4 className="font-extrabold font-display text-lg text-slate-850">풍요의 땅 배정 빵: {Math.round(lastLog.breadSupply.abundance)}개</h4>
+                                <h4 className="font-extrabold font-display text-lg text-emerald-900">풍요의 땅 배정 빵: {Math.round(lastLog.breadSupply.abundance)}개</h4>
                               </div>
 
-                              <div className="space-y-1">
-                                <p className="text-xs text-slate-500">투표 된 총 티켓</p>
-                                <p className={`text-5xl sm:text-6xl font-black font-mono tracking-tight ${
-                                  lastLog.results.abundanceStatus === 'bankrupt' ? 'text-rose-600' : 'text-emerald-700'
-                                }`}>
-                                  {lastLog.totalTickets.abundance} 장
-                                </p>
-                              </div>
-
-                              <div className="pt-4 border-t border-slate-200">
-                                {lastLog.results.abundanceStatus === 'bankrupt' ? (
-                                  <div className="space-y-1.5 inline-flex flex-col items-center">
-                                    <span className="bg-rose-100 text-rose-800 text-xs px-3 py-1 rounded-full font-black animate-bounce flex items-center gap-1.5 shadow-sm">
-                                      <Flame className="w-3.5 h-3.5" /> 과수요 파산! (Overdemand)
-                                    </span>
-                                    <p className="text-xs text-rose-700 font-bold">배정된 빵개수보다 투표된 티켓이 많습니다. 빵 0개 수확.</p>
-                                  </div>
-                                ) : (
-                                  <div className="space-y-1.5 inline-flex flex-col items-center">
-                                    <span className="bg-emerald-100 text-emerald-800 text-xs px-3 py-1 rounded-full font-black flex items-center gap-1.5 shadow-sm">
-                                      ✅ 공급 과잉! 분배 성공
-                                    </span>
-                                    <p className="text-xs text-emerald-800 font-bold">
-                                      지급 비율: <span className="text-sm font-extrabold font-mono text-emerald-950">티켓 1장당 빵 {Math.round(lastLog.results.abundanceRatio)}개 분배</span>
-                                    </p>
-                                  </div>
-                                )}
+                              <div className="space-y-3">
+                                <div>
+                                  <p className="text-xs text-slate-500 font-bold">투표 된 총 티켓</p>
+                                  <p className="text-5xl sm:text-6xl font-black font-mono tracking-tight text-emerald-700">
+                                    {lastLog.totalTickets.abundance} 장
+                                  </p>
+                                </div>
+                                <div className="flex items-center justify-center flex-wrap gap-1 md:max-w-xs mx-auto p-2 bg-emerald-100/40 rounded-xl border border-emerald-200/55 min-h-[46px]">
+                                  {lastLog.totalTickets.abundance === 0 ? (
+                                    <span className="text-emerald-600/60 text-xs font-semibold">투표된 티켓 없음</span>
+                                  ) : (
+                                    Array.from({ length: lastLog.totalTickets.abundance }).map((_, i) => (
+                                      <span key={i} className="text-xl" title="투표된 티켓">🎟️</span>
+                                    ))
+                                  )}
+                                </div>
                               </div>
                             </div>
 
                             {/* Famine visual details */}
-                            <div className={`rounded-3xl border-2 p-8 text-center space-y-6 transition-all shadow-md ${
-                              lastLog.results.famineStatus === 'bankrupt'
-                                ? 'bg-rose-50/50 border-rose-300'
-                                : 'bg-amber-50/50 border-amber-300'
-                            }`}>
-                              <div className="space-y-1">
+                            <div className="rounded-3xl border-2 p-8 text-center space-y-6 transition-all shadow-md bg-amber-50/50 border-amber-300">
+                              <div className="space-y-2">
                                 <div className="flex items-center justify-center flex-wrap gap-1 min-h-[30px] mb-1">
                                   {Array.from({ length: Math.round(lastLog.breadSupply.famine) }).map((_, i) => (
                                     <span key={i} className="text-2xl">🍞</span>
                                   ))}
                                 </div>
-                                <h4 className="font-extrabold font-display text-lg text-slate-850">기근의 땅 배정 빵: {Math.round(lastLog.breadSupply.famine)}개</h4>
+                                <h4 className="font-extrabold font-display text-lg text-amber-900">기근의 땅 배정 빵: {Math.round(lastLog.breadSupply.famine)}개</h4>
                               </div>
 
-                              <div className="space-y-1">
-                                <p className="text-xs text-slate-500">투표 된 총 티켓</p>
-                                <p className={`text-5xl sm:text-6xl font-black font-mono tracking-tight ${
-                                  lastLog.results.famineStatus === 'bankrupt' ? 'text-rose-600' : 'text-amber-700'
-                                }`}>
-                                  {lastLog.totalTickets.famine} 장
-                                </p>
-                              </div>
-
-                              <div className="pt-4 border-t border-slate-200">
-                                {lastLog.results.famineStatus === 'bankrupt' ? (
-                                  <div className="space-y-1.5 inline-flex flex-col items-center">
-                                    <span className="bg-rose-100 text-rose-800 text-xs px-3 py-1 rounded-full font-black animate-bounce flex items-center gap-1.5 shadow-sm">
-                                      <Flame className="w-3.5 h-3.5" /> 과수요 파산! (Overdemand)
-                                    </span>
-                                    <p className="text-xs text-rose-700 font-bold">배정된 빵개수보다 투표된 티켓이 많습니다. 빵 0개 수확.</p>
-                                  </div>
-                                ) : (
-                                  <div className="space-y-1.5 inline-flex flex-col items-center">
-                                    <span className="bg-amber-100 text-amber-800 text-xs px-3 py-1 rounded-full font-black flex items-center gap-1.5 shadow-sm">
-                                      ✅ 공급 과잉! 분배 성공
-                                    </span>
-                                    <p className="text-xs text-amber-800 font-bold">
-                                      지급 비율: <span className="text-sm font-extrabold font-mono text-amber-950">티켓 1장당 빵 {Math.round(lastLog.results.famineRatio)}개 분배</span>
-                                    </p>
-                                  </div>
-                                )}
+                              <div className="space-y-3">
+                                <div>
+                                  <p className="text-xs text-slate-500 font-bold">투표 된 총 티켓</p>
+                                  <p className="text-5xl sm:text-6xl font-black font-mono tracking-tight text-amber-700">
+                                    {lastLog.totalTickets.famine} 장
+                                  </p>
+                                </div>
+                                <div className="flex items-center justify-center flex-wrap gap-1 md:max-w-xs mx-auto p-2 bg-amber-100/40 rounded-xl border border-amber-200/55 min-h-[46px]">
+                                  {lastLog.totalTickets.famine === 0 ? (
+                                    <span className="text-amber-600/60 text-xs font-semibold">투표된 티켓 없음</span>
+                                  ) : (
+                                    Array.from({ length: lastLog.totalTickets.famine }).map((_, i) => (
+                                      <span key={i} className="text-xl" title="투표된 티켓">🎟️</span>
+                                    ))
+                                  )}
+                                </div>
                               </div>
                             </div>
 

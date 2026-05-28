@@ -425,7 +425,7 @@ export default function App() {
           abundanceStatus = 'bankrupt';
         } else {
           abundanceStatus = 'distributed';
-          abundanceRatio = roundAbundance / sumAbundanceTickets;
+          abundanceRatio = Math.floor(roundAbundance / sumAbundanceTickets);
         }
       }
 
@@ -434,7 +434,7 @@ export default function App() {
           famineStatus = 'bankrupt';
         } else {
           famineStatus = 'distributed';
-          famineRatio = roundFamine / sumFamineTickets;
+          famineRatio = Math.floor(roundFamine / sumFamineTickets);
         }
       }
 
@@ -507,7 +507,7 @@ export default function App() {
             ticketsUsed: totalSpent,
             abundanceTickets: abundanceSpent,
             famineTickets: famineSpent,
-            breadEarned: Math.round(totalEarned * 10) / 10,
+            breadEarned: Math.round(totalEarned),
           };
         }),
         totalTickets: {
@@ -695,7 +695,7 @@ export default function App() {
 
     state.logs.forEach(log => {
       log.teamVotes.forEach(vote => {
-        currentScores[vote.teamId] = Math.round(( (currentScores[vote.teamId] || 0) + vote.breadEarned) * 10) / 10;
+        currentScores[vote.teamId] = Math.round((currentScores[vote.teamId] || 0) + vote.breadEarned);
         const land = vote.choice === 'abundance' ? '풍요의 땅' : vote.choice === 'famine' ? '기근의 땅' : '기권(0장)';
         csvStr += `${log.round},"${vote.teamName}",${land},${vote.ticketsUsed},${vote.breadEarned},${currentScores[vote.teamId]}\n`;
       });
@@ -1808,7 +1808,7 @@ export default function App() {
                                     {lastLog.results.abundanceStatus === 'bankrupt' ? (
                                       <span className="text-rose-450 font-bold text-rose-400">💥 과수요 파산 (팀별 0개 수령)</span>
                                     ) : lastLog.results.abundanceStatus === 'distributed' ? (
-                                      <span className="text-emerald-450 font-bold text-emerald-400">🎉 지급 성공 (1장당 {lastLog.results.abundanceRatio.toFixed(1)}개)</span>
+                                      <span className="text-emerald-450 font-bold text-emerald-400">🎉 지급 성공 (1장당 {Math.round(lastLog.results.abundanceRatio)}개)</span>
                                     ) : (
                                       <span className="text-slate-400">시행 안 됨 (티켓 없음)</span>
                                     )}
@@ -1827,7 +1827,7 @@ export default function App() {
                                     {lastLog.results.famineStatus === 'bankrupt' ? (
                                       <span className="text-rose-450 font-bold text-rose-400">💥 과수요 파산 (팀별 0개 수령)</span>
                                     ) : lastLog.results.famineStatus === 'distributed' ? (
-                                      <span className="text-emerald-450 font-bold text-emerald-400">🎉 지급 성공 (1장당 {lastLog.results.famineRatio.toFixed(1)}개)</span>
+                                      <span className="text-emerald-450 font-bold text-emerald-400">🎉 지급 성공 (1장당 {Math.round(lastLog.results.famineRatio)}개)</span>
                                     ) : (
                                       <span className="text-slate-400">시행 안 됨 (티켓 없음)</span>
                                     )}
@@ -1876,8 +1876,8 @@ export default function App() {
                             <div>
                               <p className="font-bold text-slate-900">ROUND {log.round} 결과</p>
                               <p className="text-[10px] text-slate-500 mt-0.5">
-                                풍요: 티켓합 {log.totalTickets.abundance}장 / 빵 {log.breadSupply.abundance}개 ({log.results.abundanceStatus === 'bankrupt' ? '파산' : `${log.results.abundanceRatio.toFixed(1)}개씩`}) | 
-                                기근: 티켓합 {log.totalTickets.famine}장 / 빵 {log.breadSupply.famine}개 ({log.results.famineStatus === 'bankrupt' ? '파산' : `${log.results.famineRatio.toFixed(1)}개씩`})
+                                풍요: 티켓합 {log.totalTickets.abundance}장 / 빵 {Math.round(log.breadSupply.abundance)}개 ({log.results.abundanceStatus === 'bankrupt' ? '파산' : `${Math.round(log.results.abundanceRatio)}개씩`}) | 
+                                기근: 티켓합 {log.totalTickets.famine}장 / 빵 {Math.round(log.breadSupply.famine)}개 ({log.results.famineStatus === 'bankrupt' ? '파산' : `${Math.round(log.results.famineRatio)}개씩`})
                               </p>
                             </div>
                             <div className="flex gap-2.5">

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { 
   Trophy, Play, Pause, RotateCcw, Trash2, Users, Settings, 
-  ChevronRight, Download, HelpCircle, ShieldAlert, Sparkles, 
+  ChevronRight, ChevronLeft, X, BookOpen, Download, HelpCircle, ShieldAlert, Sparkles, 
   Check, Plus, Minus, Lock, Unlock, Eye, EyeOff, Award, 
   Hourglass, Flame, EggOff, ExternalLink, RefreshCw, Ticket
 } from 'lucide-react';
@@ -79,6 +79,8 @@ export default function App() {
   });
 
   const [isInAppStudentPopupOpen, setIsInAppStudentPopupOpen] = useState(false);
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
+  const [guideStep, setGuideStep] = useState(0);
 
   const showCustomConfirm = (options: {
     title: string;
@@ -733,7 +735,7 @@ export default function App() {
                 📢 풍요와 기근 게임 준비 중
               </h2>
               <p className="text-indigo-650 font-extrabold text-sm uppercase tracking-wider">
-                지니어스한 우리 반 지니어스한 놀이 활동
+                지니어스한 우리 반 학급 놀이
               </p>
               <p className="text-slate-500 text-sm max-w-md mx-auto leading-relaxed font-medium">
                 현재 교사가 게임 라운드 및 팀 목록 세팅을 진행하고 있습니다. 교사 화면에서 [풍요와 기근 게임 시작] 버튼을 누르면 이 화면에 자동으로 게임판이 중계됩니다!
@@ -1030,8 +1032,8 @@ export default function App() {
                       <div className="bg-slate-50 border border-slate-200 text-slate-700 rounded-2xl p-5 max-w-2xl mx-auto flex items-start gap-3.5">
                         <span className="text-2xl shrink-0">💡</span>
                         <div className="text-xs text-slate-650 leading-relaxed font-semibold font-sans">
-                          <p className="font-extrabold text-slate-900 text-sm mb-1">
-                            ★ 중요안내: 빵 지급 결과는 자동으로 누적되어 선생님이 관리합니다. 여러분도 자신에게 누적된 빵 개수를 확인하세요.
+                          <p className="font-extrabold text-slate-900 text-sm mb-1 text-center md:text-left">
+                            ★ 중요안내: 빵 지급 결과는 자동으로 누적되어 선생님이 관리합니다.<br />여러분도 자신에게 누적된 빵 개수를 확인하세요.
                           </p>
                         </div>
                       </div>
@@ -1193,13 +1195,13 @@ export default function App() {
                 <p>각 팀은 총 라운드 수 만큼의 티켓 보유 (예: 5라운드는 티켓 5장). 빵 수량은 <strong>[팀 수 - 2]개</strong>로 결정되며, 풍요의 땅에 대략 2/3, 기근의 땅에 1/3이 할당됩니다.</p>
               </div>
               <div className="bg-white p-3 rounded-lg border border-blue-100 shadow-xs">
-                <p className="font-bold text-blue-800 mb-1">2. 베팅 및 마스킹</p>
-                <p>매 라운드, 팀원들은 교사와 밀담을 통해 풍요/기근 중 하나를 선택하고 베팅할 티켓 수를 결정합니다. (한 번에 0장 혹은 여러 장 베팅 가능하며, 티켓을 많이 낼수록 빵을 독식할 지분이 커집니다)</p>
+                <p className="font-bold text-blue-800 mb-1">2. 게임 진행</p>
+                <p>매 라운드 팀원들은 풍요/기근 중 하나를 선택하고 티켓을 사용합니다. 특정 땅에 사용된 티켓 수가 그 땅에 배정된 빵의 수보다 많을 경우 아무도 빵을 획득하지 못합니다. 특정 땅에 사용된 티켓 수보다 그 땅에 배정된 빵의 수가 많을 경우 티켓 수에 따라 균등 배분됩니다.</p>
               </div>
               <div className="bg-white p-3 rounded-lg border border-blue-100 shadow-xs">
-                <p className="font-bold text-blue-800 mb-1">3. 계산 및 파산 규칙 (독식 vs 빵 0개)</p>
-                <p className="mb-1"><strong>① 과수요(파산):</strong> 특정 땅에 베팅된 총 티켓 수의 합이 그 땅의 배정 빵 수보다 커지면 파산!! 해당 땅을 고른 팀은 모두 빵 0개를 받습니다.</p>
-                <p><strong>② 공급 과잉(분배):</strong> 총 티켓 수의 합이 배정 빵 수 이하라면, <strong>[배정 빵 수 ÷ 총 티켓 수]</strong> 만큼 티켓 1장의 가치가 책정되어 자기가 제출한 티켓 비율대로 정교하게 균등 배분됩니다.</p>
+                <p className="font-bold text-blue-800 mb-1">3. 추가 규칙 및 게임 종료</p>
+                <p className="mb-1"><strong>게임 종료 :</strong> 라운드마다 획득한 빵의 수는 누적됩니다. 마지막 라운드가 종료되고 가장 많은 빵을 갖고 있는 팀이 우승합니다.</p>
+                <p><strong>추가 규칙 :</strong> 한 라운드에서 티켓을 사용하지 않아도 되고 여러 장을 사용할 수도 있습니다.</p>
               </div>
             </div>
           </div>
@@ -1291,7 +1293,7 @@ export default function App() {
 
                 {/* Friendly subtitle */}
                 <p className="text-amber-700 font-extrabold text-sm md:text-base tracking-wide mb-10 font-sans">
-                  지니어스한 우리 반 지니어스한 놀이 활동
+                  지니어스한 우리 반 학급 놀이
                 </p>
 
                 {/* Illustrated theme components */}
@@ -1312,18 +1314,30 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Glowing game start button */}
-                <button
-                  onClick={() => {
-                    setShowSplash(false);
-                    playBeep(523.25, 0.1); 
-                    setTimeout(() => playBeep(659.25, 0.1), 100);
-                    setTimeout(() => playBeep(783.99, 0.16), 200);
-                  }}
-                  className="pixel-pulse-btn pixel-shadow-btn w-full py-4.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xl rounded-xl border-4 border-slate-900 transition-all cursor-pointer flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  🎮 게임 시작
-                </button>
+                {/* Glowing game start button & User manual button */}
+                <div className="flex flex-col sm:flex-row gap-3.5 w-full">
+                  <button
+                    onClick={() => {
+                      setShowSplash(false);
+                      playBeep(523.25, 0.1); 
+                      setTimeout(() => playBeep(659.25, 0.1), 100);
+                      setTimeout(() => playBeep(783.99, 0.16), 200);
+                    }}
+                    className="pixel-pulse-btn pixel-shadow-btn flex-[1.2] py-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-lg rounded-xl border-4 border-slate-900 transition-all cursor-pointer flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98]"
+                  >
+                    🎮 게임 시작
+                  </button>
+                  <button
+                    onClick={() => {
+                      playBeep(587.33, 0.12);
+                      setGuideStep(0);
+                      setIsGuideOpen(true);
+                    }}
+                    className="pixel-shadow-btn flex-1 py-4 bg-slate-100 hover:bg-white text-slate-950 font-bold text-lg rounded-xl border-4 border-slate-950 transition-all cursor-pointer flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98]"
+                  >
+                    📖 사용설명서
+                  </button>
+                </div>
               </div>
 
               {/* Decorative Press Start footer */}
@@ -1332,7 +1346,7 @@ export default function App() {
               </p>
             </div>
           ) : (
-            <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 md:p-8 max-w-3xl mx-auto w-full my-auto animate-in fade-in duration-205">
+            <div className="bg-white border-4 border-slate-900 rounded-2xl shadow-md p-6 md:p-8 max-w-3xl mx-auto w-full my-auto animate-in fade-in duration-205">
               <h2 className="text-2xl font-bold font-display text-indigo-900 tracking-tight mb-2 text-center flex items-center justify-center gap-2">
                 🎮 게임 초기 설정 <span className="text-xl">Setup Node</span>
               </h2>
@@ -1342,7 +1356,7 @@ export default function App() {
 
               <div className="space-y-6">
                 {/* Round Setting slider */}
-                <div className="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100/60">
+                <div className="bg-indigo-50/80 p-5 rounded-2xl border-2 border-indigo-400 shadow-xs">
                   <div className="flex items-center justify-between mb-2">
                     <label className="text-slate-700 font-bold text-sm block flex items-center gap-1.5">
                       <Hourglass className="w-4 h-4 text-indigo-600" /> 총 게임 라운드 수
@@ -1379,7 +1393,7 @@ export default function App() {
                 </div>
 
                 {/* Direct-input and Arrow time adjuster */}
-                <div className="bg-slate-100/60 p-4 rounded-xl border border-slate-200/50">
+                <div className="bg-slate-100 p-5 rounded-2xl border-2 border-slate-400 shadow-xs">
                   <div className="flex items-center justify-between mb-3">
                     <label className="text-slate-700 font-bold text-sm flex items-center gap-1.5">
                       ⏱️ 라운드 제한시간 설정
@@ -1388,7 +1402,7 @@ export default function App() {
                       총 {Math.floor(state.timerDuration / 60)}분 {state.timerDuration % 60}초 ({state.timerDuration}초)
                     </span>
                   </div>
-                  <div className="flex items-center justify-center gap-6 bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs">
+                  <div className="flex items-center justify-center gap-6 bg-white p-3.5 rounded-xl border-2 border-slate-300 shadow-3xs">
                     {/* Minute adjustable input with arrows */}
                     <div className="flex flex-col items-center">
                       <span className="text-[10px] uppercase tracking-wider font-extrabold text-slate-450 mb-1 font-sans">분 (MIN)</span>
@@ -1402,7 +1416,7 @@ export default function App() {
                             saveGameState(prev => ({ ...prev, timerDuration: nextDuration, timerSeconds: nextDuration }));
                             playBeep(440, 0.05);
                           }}
-                          className="w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 rounded-lg cursor-pointer text-slate-700 font-extrabold transition-colors border border-slate-150"
+                          className="w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 rounded-lg cursor-pointer text-slate-700 font-extrabold transition-colors border border-slate-200"
                         >
                           ◀
                         </button>
@@ -1417,7 +1431,7 @@ export default function App() {
                             const nextDuration = min * 60 + sec;
                             saveGameState(prev => ({ ...prev, timerDuration: nextDuration, timerSeconds: nextDuration }));
                           }}
-                          className="w-14 text-center border border-slate-200 rounded-lg p-1.5 font-bold font-mono text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+                          className="w-14 text-center border-2 border-slate-250 rounded-lg p-1.5 font-bold font-mono text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
                         />
                         <button
                           onClick={() => {
@@ -1428,7 +1442,7 @@ export default function App() {
                             saveGameState(prev => ({ ...prev, timerDuration: nextDuration, timerSeconds: nextDuration }));
                             playBeep(440, 0.05);
                           }}
-                          className="w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 rounded-lg cursor-pointer text-slate-700 font-extrabold transition-colors border border-slate-150"
+                          className="w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 rounded-lg cursor-pointer text-slate-700 font-extrabold transition-colors border border-slate-200"
                         >
                           ▶
                         </button>
@@ -1459,7 +1473,7 @@ export default function App() {
                             saveGameState(prev => ({ ...prev, timerDuration: nextDuration, timerSeconds: nextDuration }));
                             playBeep(440, 0.05);
                           }}
-                          className="w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 rounded-lg cursor-pointer text-slate-700 font-extrabold transition-colors border border-slate-150"
+                          className="w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 rounded-lg cursor-pointer text-slate-700 font-extrabold transition-colors border border-slate-200"
                           title="-5초"
                         >
                           ◀
@@ -1475,7 +1489,7 @@ export default function App() {
                             const nextDuration = min * 60 + sec;
                             saveGameState(prev => ({ ...prev, timerDuration: nextDuration, timerSeconds: nextDuration }));
                           }}
-                          className="w-14 text-center border border-slate-200 rounded-lg p-1.5 font-bold font-mono text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+                          className="w-14 text-center border-2 border-slate-250 rounded-lg p-1.5 font-bold font-mono text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
                         />
                         <button
                           onClick={() => {
@@ -1491,7 +1505,7 @@ export default function App() {
                             saveGameState(prev => ({ ...prev, timerDuration: nextDuration, timerSeconds: nextDuration }));
                             playBeep(440, 0.05);
                           }}
-                          className="w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 rounded-lg cursor-pointer text-slate-700 font-extrabold transition-colors border border-slate-150"
+                          className="w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 rounded-lg cursor-pointer text-slate-700 font-extrabold transition-colors border border-slate-200"
                           title="+5초"
                         >
                           ▶
@@ -1502,12 +1516,12 @@ export default function App() {
                 </div>
 
                 {/* Teams Input area */}
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
+                <div className="bg-slate-100 p-5 rounded-2xl border-2 border-slate-400 shadow-xs">
+                  <div className="flex items-center justify-between mb-2">
                     <label className="text-slate-700 font-bold text-sm block flex items-center gap-1.5">
                       <Users className="w-4 h-4 text-indigo-600" /> 참여 팀 입력 (줄바꿈/엔터로 구분)
                     </label>
-                    <span className="text-slate-550 text-xs font-semibold bg-slate-100 px-2 py-0.5 rounded">
+                    <span className="text-slate-550 text-xs font-semibold bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded">
                       설정된 줄 수: {calculatedTotalTeams}팀
                     </span>
                   </div>
@@ -1515,7 +1529,7 @@ export default function App() {
                     value={teamsString}
                     onChange={(e) => setTeamsString(e.target.value)}
                     placeholder="예시:&#10;홍길동팀&#10;이순신팀&#10;삼국지팀"
-                    className="w-full h-44 p-3.5 border border-slate-200 rounded-xl font-mono text-sm bg-slate-50 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all resize-y"
+                    className="w-full h-44 p-3.5 border-2 border-slate-300 rounded-xl font-mono text-sm bg-white focus:outline-hidden focus:ring-2 focus:ring-indigo-500 transition-all resize-y shadow-3xs"
                   />
                 </div>
 
@@ -1579,7 +1593,7 @@ export default function App() {
           <div className="flex-1 flex flex-col gap-6">
             
             {/* 2-1: COMMON GAME SUMMARY BADGES */}
-            <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-wrap items-center justify-between gap-4 shadow-xs">
+            <div className="bg-white border-2 border-slate-400 rounded-xl p-4 flex flex-wrap items-center justify-between gap-4 shadow-sm">
               <div className="flex items-center gap-3">
                 <span className="bg-slate-100 text-slate-800 border border-slate-200 text-xs px-3 py-1 rounded-md font-bold font-mono">
                   ROUND {state.currentRound} / {state.totalRounds}
@@ -1621,13 +1635,16 @@ export default function App() {
             
             {/* VIEW A: TEACHER VIEW PANEL */}
             {currentView === 'teacher' && (
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="space-y-6">
                 
-                {/* TEACHER CARD LEFT/MIDDLE: TABLE AREA */}
-                <div className="lg:col-span-2 space-y-6">
+                {/* UPPER GRID AREA */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  
+                  {/* TEACHER CARD LEFT/MIDDLE: TABLE AREA */}
+                  <div className="lg:col-span-2">
                   
                   {/* MAIN PANEL */}
-                  <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                  <div className="bg-white border-2 border-slate-400 rounded-2xl shadow-sm overflow-hidden">
                     <div className="bg-slate-900 border-b border-slate-800 p-4 shrink-0 flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></span>
@@ -1776,130 +1793,13 @@ export default function App() {
                       </table>
                     </div>
                   </div>
-
-                  {/* SUB PANEL: REAL-TIME ROUND CALCULATOR RESULTS PREVIEW */}
-                  {state.status === 'round_ended' && (
-                    <div className="bg-indigo-900 text-white rounded-2xl p-6 border border-indigo-950 shadow-md">
-                      <div className="flex items-center justify-between mb-4 pb-2 border-b border-indigo-800">
-                        <h4 className="font-display font-bold text-lg flex items-center gap-2 text-indigo-100">
-                          📊 이번 라운드 정산 완료 <span className="text-sm font-normal text-indigo-300">(교사 전용 데이터 보드)</span>
-                        </h4>
-                        <span className="bg-indigo-800 text-indigo-200 text-xs px-2 py-0.5 rounded font-mono font-bold">
-                          ROUND {state.logs[state.logs.length - 1]?.round}
-                        </span>
-                      </div>
-
-                      {(() => {
-                        const lastLog = state.logs[state.logs.length - 1];
-                        if (!lastLog) return null;
-
-                        return (
-                          <div className="space-y-4">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              
-                              {/* Abundance outcome */}
-                              <div className="bg-indigo-950/75 p-4 rounded-xl border border-indigo-800">
-                                <p className="text-xs text-indigo-400 font-bold mb-1">🍞 풍요의 땅 정산 현황</p>
-                                <div className="space-y-1.5 text-xs text-slate-300">
-                                  <p>배정된 빵: <span className="text-white font-bold">{lastLog.breadSupply.abundance}개</span></p>
-                                  <p>투표된 티켓: <span className="text-indigo-300 font-bold">{lastLog.totalTickets.abundance}장</span></p>
-                                  <p className="pt-1.5 flex items-center gap-2 border-t border-indigo-900 text-sm mt-2">
-                                    결과: 
-                                    {lastLog.results.abundanceStatus === 'bankrupt' ? (
-                                      <span className="text-rose-450 font-bold text-rose-400">💥 과수요 파산 (팀별 0개 수령)</span>
-                                    ) : lastLog.results.abundanceStatus === 'distributed' ? (
-                                      <span className="text-emerald-450 font-bold text-emerald-400">🎉 지급 성공 (1장당 {Math.round(lastLog.results.abundanceRatio)}개)</span>
-                                    ) : (
-                                      <span className="text-slate-400">시행 안 됨 (티켓 없음)</span>
-                                    )}
-                                  </p>
-                                </div>
-                              </div>
-
-                              {/* Famine outcome */}
-                              <div className="bg-indigo-950/75 p-4 rounded-xl border border-indigo-800">
-                                <p className="text-xs text-indigo-400 font-bold mb-1">🏜️ 기근의 땅 정산 현황</p>
-                                <div className="space-y-1.5 text-xs text-slate-300">
-                                  <p>배정된 빵: <span className="text-white font-bold">{lastLog.breadSupply.famine}개</span></p>
-                                  <p>투표된 티켓: <span className="text-indigo-300 font-bold">{lastLog.totalTickets.famine}장</span></p>
-                                  <p className="pt-1.5 flex items-center gap-2 border-t border-indigo-900 text-sm mt-2">
-                                    결과: 
-                                    {lastLog.results.famineStatus === 'bankrupt' ? (
-                                      <span className="text-rose-450 font-bold text-rose-400">💥 과수요 파산 (팀별 0개 수령)</span>
-                                    ) : lastLog.results.famineStatus === 'distributed' ? (
-                                      <span className="text-emerald-450 font-bold text-emerald-400">🎉 지급 성공 (1장당 {Math.round(lastLog.results.famineRatio)}개)</span>
-                                    ) : (
-                                      <span className="text-slate-400">시행 안 됨 (티켓 없음)</span>
-                                    )}
-                                  </p>
-                                </div>
-                              </div>
-
-                            </div>
-
-                            {/* Detailed team breakdown for teacher audit */}
-                            <div className="bg-indigo-950/50 p-4.5 rounded-xl border border-indigo-800 text-xs">
-                              <p className="font-bold mb-2.5 text-indigo-250 border-b border-indigo-900 pb-1 flex items-center gap-1.5">
-                                <Users className="w-4 h-4 text-emerald-400" /> 팀별 개별 빵 획득 수량 (즉시 누적 계산됨)
-                              </p>
-                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
-                                {lastLog.teamVotes.map((v, i) => (
-                                  <div key={i} className="flex justify-between items-center text-slate-300 py-0.5">
-                                    <span>{v.teamName}</span>
-                                    <span className="font-mono text-white text-right">
-                                      {v.choice === 'abundance' ? '🍞 풍요' : v.choice === 'famine' ? '🏜️ 기근' : '기권'} ({v.ticketsUsed}장) ➡️ <strong className="text-emerald-400">+{v.breadEarned}개</strong>
-                                    </span>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })()}
-                    </div>
-                  )}
-
-                  {/* RECENT HISTORIC LOG TABLE (TEACHER REPORT) */}
-                  <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-4 text-slate-800">
-                    <h4 className="font-display font-extrabold text-sm mb-3 text-slate-900 flex items-center justify-between">
-                      📊 라운드별 미세 상세 게임 로그
-                      <span className="text-xs font-normal text-slate-500 font-mono">Total {state.logs.length} entries</span>
-                    </h4>
-                    {state.logs.length === 0 ? (
-                      <p className="text-xs text-slate-400 p-6 text-center border border-dashed rounded-xl border-slate-200 bg-slate-50/50">
-                        아직 기록이 없습니다. 라운드를 종료하면 자동으로 정교한 영구 기록 로그가 저장됩니다.
-                      </p>
-                    ) : (
-                      <div className="space-y-2.5 max-h-56 overflow-y-auto pr-1">
-                        {state.logs.map((log, idx) => (
-                          <div key={idx} className="bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs flex justify-between items-center flex-wrap gap-2">
-                            <div>
-                              <p className="font-bold text-slate-900">ROUND {log.round} 결과</p>
-                              <p className="text-[10px] text-slate-500 mt-0.5">
-                                풍요: 티켓합 {log.totalTickets.abundance}장 / 빵 {Math.round(log.breadSupply.abundance)}개 ({log.results.abundanceStatus === 'bankrupt' ? '파산' : `${Math.round(log.results.abundanceRatio)}개씩`}) | 
-                                기근: 티켓합 {log.totalTickets.famine}장 / 빵 {Math.round(log.breadSupply.famine)}개 ({log.results.famineStatus === 'bankrupt' ? '파산' : `${Math.round(log.results.famineRatio)}개씩`})
-                              </p>
-                            </div>
-                            <div className="flex gap-2.5">
-                              {log.teamVotes.map((v, sIdx) => (
-                                <span key={sIdx} className="text-[10px] bg-white border px-1.5 py-0.5 rounded text-slate-600">
-                                  {v.teamName.slice(0,4)}: +{v.breadEarned}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
                 </div>
 
                 {/* TEACHER CARD RIGHT: MASTER CONTROL & TIMERS */}
-                <div className="space-y-6">
+                <div className="lg:col-span-1">
                   
                   {/* MASTER ACTIONS STATUS CARD */}
-                  <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+                  <div className="bg-white border-2 border-slate-400 rounded-2xl p-6 shadow-sm">
                     <h3 className="font-display font-extrabold text-slate-900 text-base mb-4 pb-2 border-b border-rose-50 flex items-center gap-1.5 text-indigo-900">
                       🗝️ 타이머&라운드 <span className="text-xs text-slate-400">Master Key</span>
                     </h3>
@@ -1982,10 +1882,10 @@ export default function App() {
                           {/* Advance/Next Round */}
                           <button
                             onClick={handleAdvanceRound}
-                            className="w-full py-3 bg-slate-900 hover:bg-slate-950 text-white font-extrabold text-sm rounded-xl border border-slate-800 shadow-md hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                            className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm rounded-xl border border-indigo-700 shadow-md hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer"
                           >
                             {state.currentRound >= state.totalRounds 
-                              ? '🏆 최종 우승 리더보드 가기' 
+                              ? '🏆 최종 우승자 확인하기' 
                               : `➡️ 다음 라운드 (${state.currentRound + 1}R) 진행`
                             }
                             <ChevronRight className="w-4 h-4" />
@@ -2009,8 +1909,8 @@ export default function App() {
                         disabled={state.logs.length === 0}
                         className={`w-full py-2.5 font-bold text-xs rounded-lg border transition-all flex items-center justify-center gap-1.5 ${
                           state.logs.length > 0 
-                            ? 'bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100'
-                            : 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed'
+                            ? 'bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 font-bold'
+                            : 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed font-bold'
                         }`}
                       >
                         <Download className="w-3.5 h-3.5" /> 게임 로그 CSV 파일로 저장
@@ -2019,22 +1919,144 @@ export default function App() {
 
                   </div>
 
-                  {/* MINI RULE EXPLANATION */}
-                  <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm text-xs space-y-3.5">
-                    <h4 className="font-extrabold text-slate-800 flex items-center gap-1">
-                      💡 교사용 간이 정산 퀵가이드
-                    </h4>
-                    <p className="text-slate-500 leading-relaxed">
-                      이 게임은 교실에 있는 <strong>학생들에게 빵 분배 수량을 노출하지 않습니다.</strong> 
-                      정산 이후 <strong className="text-slate-950">"전광판에 결과 전격 공개"</strong> 버튼을 누르면, 학생 화면에는 오직 <strong>풍요와 기근에 걸린 총 티켓의 합계</strong>만 거대하게 등장합니다. 
-                      학생팀들이 자기 땅의 분배 빵 개수비 대비 투표된 티켓 비율을 고려해 직접 수학적 계산과 추론을 하도록 가이드해 주시면 교육 효과가 더욱 극대화됩니다!
-                    </p>
-                  </div>
-
                 </div>
 
+              </div> {/* Close UPPER GRID AREA */}
+
+              {/* Bottom full-width areas */}
+              {/* SUB PANEL: REAL-TIME ROUND CALCULATOR RESULTS PREVIEW */}
+              {state.status === 'round_ended' && (
+                <div className="bg-indigo-900 text-white rounded-2xl p-6 border-2 border-indigo-950 shadow-md">
+                  <div className="flex items-center justify-between mb-4 pb-2 border-b border-indigo-800">
+                    <h4 className="font-display font-bold text-lg flex items-center gap-2 text-indigo-100">
+                      📊 이번 라운드 정산 완료 <span className="text-sm font-normal text-indigo-300">(교사 전용 데이터 보드)</span>
+                    </h4>
+                    <span className="bg-indigo-800 text-indigo-200 text-xs px-2 py-0.5 rounded font-mono font-bold">
+                      ROUND {state.logs[state.logs.length - 1]?.round}
+                    </span>
+                  </div>
+
+                  {(() => {
+                    const lastLog = state.logs[state.logs.length - 1];
+                    if (!lastLog) return null;
+
+                    return (
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          
+                          {/* Abundance outcome */}
+                          <div className="bg-indigo-950/75 p-4 rounded-xl border border-indigo-800">
+                            <p className="text-xs text-indigo-400 font-bold mb-1">🍞 풍요의 땅 정산 현황</p>
+                            <div className="space-y-1.5 text-xs text-slate-300">
+                              <p>배정된 빵: <span className="text-white font-bold">{lastLog.breadSupply.abundance}개</span></p>
+                              <p>투표된 티켓: <span className="text-indigo-300 font-bold">{lastLog.totalTickets.abundance}장</span></p>
+                              <p className="pt-1.5 flex items-center gap-2 border-t border-indigo-900 text-sm mt-2">
+                                결과: 
+                                {lastLog.results.abundanceStatus === 'bankrupt' ? (
+                                  <span className="text-rose-400 font-bold">💥 과수요 파산 (팀별 0개 수령)</span>
+                                ) : lastLog.results.abundanceStatus === 'distributed' ? (
+                                  <span className="text-emerald-400 font-bold">🎉 지급 성공 (1장당 {Math.round(lastLog.results.abundanceRatio)}개)</span>
+                                ) : (
+                                  <span className="text-slate-400">시행 안 됨 (티켓 없음)</span>
+                                )}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Famine outcome */}
+                          <div className="bg-indigo-950/75 p-4 rounded-xl border border-indigo-800">
+                            <p className="text-xs text-indigo-400 font-bold mb-1">🏜️ 기근의 땅 정산 현황</p>
+                            <div className="space-y-1.5 text-xs text-slate-300">
+                              <p>배정된 빵: <span className="text-white font-bold">{lastLog.breadSupply.famine}개</span></p>
+                              <p>투표된 티켓: <span className="text-indigo-300 font-bold">{lastLog.totalTickets.famine}장</span></p>
+                              <p className="pt-1.5 flex items-center gap-2 border-t border-indigo-900 text-sm mt-2">
+                                결과: 
+                                {lastLog.results.famineStatus === 'bankrupt' ? (
+                                  <span className="text-rose-400 font-bold">💥 과수요 파산 (팀별 0개 수령)</span>
+                                ) : lastLog.results.famineStatus === 'distributed' ? (
+                                  <span className="text-emerald-400 font-bold">🎉 지급 성공 (1장당 {Math.round(lastLog.results.famineRatio)}개)</span>
+                                ) : (
+                                  <span className="text-slate-400">시행 안 됨 (티켓 없음)</span>
+                                )}
+                              </p>
+                            </div>
+                          </div>
+
+                        </div>
+
+                        {/* Detailed team breakdown for teacher audit */}
+                        <div className="bg-indigo-950/50 p-4.5 rounded-xl border border-indigo-800 text-xs">
+                          <p className="font-bold mb-2.5 text-indigo-250 border-b border-indigo-900 pb-1 flex items-center gap-1.5">
+                            <Users className="w-4 h-4 text-emerald-400" /> 팀별 개별 빵 획득 수량 (즉시 누적 계산됨)
+                          </p>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
+                            {lastLog.teamVotes.map((v, i) => {
+                              const exactTeam = state.teams.find(t => t.id === v.teamId);
+                              const cumulative = exactTeam ? exactTeam.cumulativeBread : 0;
+                              return (
+                                <div key={i} className="flex justify-between items-center text-slate-300 py-0.5">
+                                  <span>{v.teamName}</span>
+                                  <span className="font-mono text-white text-right">
+                                    {v.choice === 'abundance' ? '🍞 풍요' : v.choice === 'famine' ? '🏜️ 기근' : '기권'} ({v.ticketsUsed}장) ➡️ <strong className="text-emerald-400 font-extrabold">+{v.breadEarned}개</strong> <span className="text-indigo-300 font-bold text-[11px] font-sans ml-1.5">(누적 {cumulative}개)</span>
+                                  </span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })()}
+                </div>
+              )}
+
+              {/* HISTORIC LOG TABLE (TEACHER REPORT) */}
+              <div className="bg-white border-2 border-slate-400 rounded-2xl shadow-sm p-4 text-slate-800">
+                <h4 className="font-display font-extrabold text-sm mb-3 text-slate-900 flex items-center justify-between">
+                  📊 라운드별 상세 게임 로그
+                  <span className="text-xs font-normal text-slate-500 font-mono">Total {state.logs.length} entries</span>
+                </h4>
+                {state.logs.length === 0 ? (
+                  <p className="text-xs text-slate-400 p-6 text-center border border-dashed rounded-xl border-slate-200 bg-slate-50/50">
+                    아직 기록이 없습니다. 라운드를 종료하면 자동으로 정교한 영구 기록 로그가 저장됩니다.
+                  </p>
+                ) : (
+                  <div className="space-y-2.5 max-h-56 overflow-y-auto pr-1">
+                    {state.logs.map((log, idx) => (
+                      <div key={idx} className="bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs flex justify-between items-center flex-wrap gap-2">
+                        <div>
+                          <p className="font-bold text-slate-900">ROUND {log.round} 결과</p>
+                          <p className="text-[10px] text-slate-500 mt-0.5">
+                            풍요: 티켓합 {log.totalTickets.abundance}장 / 빵 {Math.round(log.breadSupply.abundance)}개 ({log.results.abundanceStatus === 'bankrupt' ? '파산' : `${Math.round(log.results.abundanceRatio)}개씩`}) | 
+                            기근: 티켓합 {log.totalTickets.famine}장 / 빵 {Math.round(log.breadSupply.famine)}개 ({log.results.famineStatus === 'bankrupt' ? '파산' : `${Math.round(log.results.famineRatio)}개씩`})
+                          </p>
+                        </div>
+                        <div className="flex gap-2 font-mono font-bold">
+                          {log.teamVotes.map((v, sIdx) => {
+                            // Let's locate the cumulative sum up to this log round!
+                            let historicCumulative = 0;
+                            for (let rIdx = 0; rIdx <= idx; rIdx++) {
+                              const pastLog = state.logs[rIdx];
+                              const pastVote = pastLog?.teamVotes.find(pv => pv.teamId === v.teamId);
+                              if (pastVote) {
+                                historicCumulative += pastVote.breadEarned;
+                              }
+                            }
+                            return (
+                              <span key={sIdx} className="text-[10px] bg-white border px-1.5 py-0.5 rounded text-slate-750">
+                                {v.teamName}:+{v.breadEarned} (누적 {historicCumulative}개)
+                              </span>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
+
+            </div>
+          )}
 
           </div>
         )}
@@ -2079,6 +2101,283 @@ export default function App() {
           </div>
         </div>
       )}
+
+      {/* GAME USE GUIDE SIDE-SLIDE SHOW DIALOG */}
+      {isGuideOpen && (() => {
+        const guideSlides = [
+          {
+            title: "🌾 풍요와 기근 게임의 목표",
+            emoji: "🌾",
+            subtitle: "해당 지역의 빵을 분배받기 위한 전략 학급 놀이",
+            content: (
+              <div className="space-y-4 text-left py-2 font-sans">
+                <div className="bg-amber-50 border-2 border-amber-200/65 p-6 rounded-2xl space-y-3.5 shadow-xs">
+                  <h5 className="font-extrabold text-amber-950 text-base md:text-lg flex items-center gap-2">
+                    🎯 게임의 목표
+                  </h5>
+                  <p className="text-slate-750 text-sm md:text-base leading-relaxed font-semibold">
+                    각 팀은 매 라운드마다 소유한 티켓을 활용해 <strong>'풍요의 땅'</strong> 또는 <strong>'기근의 땅'</strong>으로 이동하게 됩니다. 해당 지역의 빵의 개수를 균등하게 나누거나 균등하게 나눌 수 없을 경우 빵을 얻을 수 없습니다. 최종적으로 누적된 빵이 가장 많은 사람(팀)이 우승합니다.
+                  </p>
+                </div>
+              </div>
+            )
+          },
+          {
+            title: "🔁 게임의 전개 과정",
+            emoji: "🔁",
+            subtitle: "게임 단계별 기본 프로세스 안내",
+            content: (
+              <div className="space-y-4 text-left font-sans">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 shadow-3xs hover:border-amber-300 transition-all">
+                    <div className="w-7 h-7 bg-slate-900 text-white rounded-full text-xs font-black flex items-center justify-center mb-2.5">1</div>
+                    <h5 className="font-black text-slate-900 text-sm mb-1.5">게임 사전 설정</h5>
+                    <p className="text-xs text-slate-650 leading-relaxed font-medium">
+                      게임 라운드 수, 제한시간, 참여 팀(학생)을 사전에 설정합니다. 각 팀에 제공되는 티켓 수는 라운드 횟수와 같으며 풍요의 땅과 기근의 땅에 배정되는 빵의 개수는 2:1로 자동 배정됩니다.
+                    </p>
+                  </div>
+                  <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 shadow-3xs hover:border-amber-300 transition-all">
+                    <div className="w-7 h-7 bg-slate-900 text-white rounded-full text-xs font-black flex items-center justify-center mb-2.5">2</div>
+                    <h5 className="font-black text-slate-900 text-sm mb-1.5">게임 진행</h5>
+                    <p className="text-xs text-slate-650 leading-relaxed font-medium">
+                      라운드가 진행되는 시간 동안 학생들은 갖고 있는 티켓을 활용해 풍요의 땅으로 갈지, 기근의 땅으로 갈지를 결정합니다. 한 라운드 당 사용할 수 있는 티켓의 수에는 제한이 없습니다.
+                    </p>
+                  </div>
+                  <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 shadow-3xs hover:border-amber-300 transition-all">
+                    <div className="w-7 h-7 bg-slate-900 text-white rounded-full text-xs font-black flex items-center justify-center mb-2.5">3</div>
+                    <h5 className="font-black text-slate-900 text-sm mb-1.5">게임 종료</h5>
+                    <p className="text-xs text-slate-650 leading-relaxed font-medium">
+                      매 라운드가 종료될 때마다 각각의 땅에 간 학생의 수가 공개됩니다. 그리고 최종 라운드가 끝나고 가장 많은 빵을 소유한 학생(팀)이 승리하게 됩니다.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )
+          },
+          {
+            title: "세부 규칙 : 균등 분배",
+            emoji: "⚖️",
+            subtitle: "소수점 없는 정수 단위 지급 및 탈락 원칙",
+            content: (
+              <div className="space-y-4 text-left font-sans">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-emerald-50 border-2 border-emerald-200 p-4.5 rounded-2xl space-y-3">
+                    <h5 className="font-extrabold text-emerald-950 text-xs md:text-sm leading-snug">
+                      1. 특정 땅에 투표 된 티켓 수보다 배정된 빵의 수가 더 많다면 모든 학생은 균등하게 빵을 분배 받습니다.
+                    </h5>
+                    <div className="bg-white/85 p-3 rounded-xl border border-emerald-100 space-y-1.5 text-[11px] text-emerald-900 font-semibold leading-relaxed">
+                      <p><strong>예)</strong> 풍요의 땅에 배정된 빵 6개, 투표 된 티켓 수가 4개라면 해당 학생들은 빵을 1개씩 분배 받음</p>
+                      <p><strong>예)</strong> 풍요의 땅에 배정된 빵 6개, 투표 된 티켓 수가 3개라면 해당 학생들은 빵을 2개씩 분배 받음</p>
+                    </div>
+                  </div>
+
+                  <div className="bg-rose-50 border-2 border-rose-200 p-4.5 rounded-2xl space-y-3">
+                    <h5 className="font-extrabold text-rose-950 text-xs md:text-sm leading-snug">
+                      2. 특정 땅에 투표 된 티켓 수보다 배정된 빵의 수가 더 적다면 모든 학생은 빵을 분배 받지 못합니다.
+                    </h5>
+                    <div className="bg-white/85 p-3 rounded-xl border border-rose-100 text-[11px] text-rose-900 font-semibold leading-relaxed">
+                      <p><strong>예)</strong> 기근의 땅에 배정된 빵 3개, 투표 된 티켓 수가 4개라면 해당 학생들은 빵을 분배 받지 못함.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          },
+          {
+            title: "풍요와 기근 서비스 운영 TIP",
+            emoji: "💡",
+            subtitle: "학급 놀이를 원활하게 진행하기 위한 최고의 팁",
+            content: (
+              <div className="space-y-3 text-left font-sans">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                  <div className="p-3 bg-white rounded-xl border border-slate-200/80 flex items-start gap-2 shadow-3xs">
+                    <span className="text-amber-500 font-extrabold text-sm">1.</span>
+                    <p className="text-slate-650 leading-relaxed font-semibold">라운드 수는 학급 상황에 맞게 조절하세요. <strong>5라운드</strong>가 가장 적당합니다.</p>
+                  </div>
+                  <div className="p-3 bg-white rounded-xl border border-slate-200/80 flex items-start gap-2 shadow-3xs">
+                    <span className="text-amber-500 font-extrabold text-sm">2.</span>
+                    <p className="text-slate-650 leading-relaxed font-semibold">라운드 시간은 선생님이 티켓을 조작하는 시간도 필요하므로 학생 수에 맞게 조절해 주세요. <strong>10분</strong> 정도가 적당합니다.</p>
+                  </div>
+                  <div className="p-3 bg-white rounded-xl border border-slate-200/80 flex items-start gap-2 shadow-3xs">
+                    <span className="text-amber-500 font-extrabold text-sm">3.</span>
+                    <p className="text-slate-650 leading-relaxed font-semibold">개인전으로 할 수도 있지만 게임 성격 상 <strong>10~14명</strong> 정도의 플레이어가 적절하며, <strong>2인 1조</strong>로 팀을 구성하는 것도 좋습니다.</p>
+                  </div>
+                  <div className="p-3 bg-white rounded-xl border border-slate-200/80 flex items-start gap-2 shadow-3xs">
+                    <span className="text-amber-500 font-extrabold text-sm">4.</span>
+                    <p className="text-slate-650 leading-relaxed font-semibold">교사 화면은 교사용 디바이스에만 띄우고, 학생용 TV화면에는 <strong>'학생용 중계 화면'</strong>을 연결해 주세요.</p>
+                  </div>
+                  <div className="p-3 bg-white rounded-xl border border-slate-200/80 flex items-start gap-2 shadow-3xs">
+                    <span className="text-amber-500 font-extrabold text-sm">5.</span>
+                    <p className="text-slate-650 leading-relaxed font-semibold">학생들은 자신의 빵 개수 계산이나 전략 수립을 위해 <strong>메모장과 필기도구</strong>를 준비하도록 권장하세요.</p>
+                  </div>
+                  <div className="p-3 bg-white rounded-xl border border-slate-200/80 flex items-start gap-2 shadow-3xs">
+                    <span className="text-amber-500 font-extrabold text-sm">6.</span>
+                    <p className="text-slate-100 font-semibold" style={{display: "none"}}></p>
+                    <p className="text-slate-650 leading-relaxed font-semibold"><strong>티켓 추가 구매(가불 및 대출)</strong> 기능을 학급 경제활동이나 학급 보상 점수 시스템과 연계하여 운영할 수 있습니다.</p>
+                  </div>
+                </div>
+              </div>
+            )
+          },
+          {
+            title: "교사 화면과 학생용 중계 화면 활용",
+            emoji: "🖥️",
+            subtitle: "교실 내 멀티스크린 구성 및 조작법 가이드",
+            content: (
+              <div className="space-y-4 text-left font-sans">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4 bg-indigo-50/40 rounded-2xl border border-indigo-100 shadow-3xs hover:border-indigo-300 transition-all">
+                    <h5 className="font-extrabold text-indigo-950 text-xs md:text-sm flex items-center gap-1.5 mb-2">
+                      📺 학생용 중계 화면
+                    </h5>
+                    <p className="text-[11px] text-slate-600 leading-relaxed font-semibold">
+                      교실 TV에 학생용 중계 화면을 띄워주세요. 라운드 타이머 및 라운드 종료 시 결과를 보여줍니다. 최종 결과도 확인할 수 있습니다.
+                    </p>
+                  </div>
+                  <div className="p-4 bg-amber-50/40 rounded-2xl border border-amber-100 shadow-3xs hover:border-amber-300 transition-all">
+                    <h5 className="font-extrabold text-amber-950 text-xs md:text-sm flex items-center gap-1.5 mb-2">
+                      ⚙️ 교사 화면
+                    </h5>
+                    <p className="text-[11px] text-slate-600 leading-relaxed font-semibold">
+                      게임에 대한 사전 설정 및 라운드 티켓 사용을 제어합니다. 학생들은 교사에게 와서 티켓을 사용하면 교사가 교사 화면에서 반영합니다. 한 라운드에 여러 장의 티켓을 활용할 수도 있습니다. 타이머 시간을 유연하게 조작할 수 있고, 게임 상세 로그와 게임 결과를 다운로드할 수 있습니다.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Highly highlighted video search tip */}
+                <div className="p-3.5 bg-amber-50 rounded-xl border border-amber-200 flex items-center gap-2.5 text-[11px] font-bold text-amber-900 leading-relaxed shadow-3xs mt-2">
+                  <span className="text-sm shrink-0">📺</span>
+                  <span>유튜브에서 <strong>'지니어스 게임-풍요와 기근'</strong>으로 검색하시면 게임 소개 영상을 확인하실 수 있습니다.<br />본 서비스는 학급에 활용할 수 있게 변형되었습니다.</span>
+                </div>
+              </div>
+            )
+          }
+        ];
+
+        return (
+          <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-xs z-[60] flex items-center justify-center p-4 animate-in fade-in duration-200">
+            <div className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full border border-slate-200/60 overflow-hidden transform transition-all scale-100 animate-in zoom-in-95 duration-200 flex flex-col md:h-[75vh] min-h-[540px] max-h-[90vh]">
+              
+              {/* Header top row */}
+              <div className="px-6 py-4.5 bg-slate-50 border-b border-slate-100 flex items-center justify-between shrink-0">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-sm font-bold shadow-xs">
+                    📖
+                  </div>
+                  <div>
+                    <h3 className="text-base font-black text-slate-900 tracking-tight">
+                      풍요와 기근 사용설명서
+                    </h3>
+                    <p className="text-[9px] text-amber-800 font-extrabold uppercase tracking-widest mt-0.5">
+                      Classroom Guide Menu
+                    </p>
+                  </div>
+                </div>
+                
+                <button
+                  onClick={() => {
+                    playBeep(440, 0.1);
+                    setIsGuideOpen(false);
+                  }}
+                  className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-200 text-slate-400 hover:text-slate-800 transition-colors cursor-pointer"
+                  title="설명서 닫기"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Middle body section: Slide contents selection */}
+              <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6">
+                
+                {/* Header inside slide illustration */}
+                <div className="text-center space-y-2">
+                  <div className="inline-flex text-5xl bg-amber-50 p-3.5 pt-4 rounded-2xl border border-amber-200/55 mb-1">
+                    {guideSlides[guideStep].emoji}
+                  </div>
+                  <h4 className="text-lg font-black text-slate-900 tracking-tight">
+                    {guideSlides[guideStep].title}
+                  </h4>
+                  <p className="text-xs text-indigo-650 font-black">
+                    {guideSlides[guideStep].subtitle}
+                  </p>
+                </div>
+
+                {/* Real Content container */}
+                <div className="bg-slate-50/50 p-4.5 rounded-2xl border border-slate-200/80">
+                  {guideSlides[guideStep].content}
+                </div>
+
+              </div>
+
+              {/* Footer containing navigation */}
+              <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between shrink-0 font-sans">
+                
+                {/* Left back button */}
+                <button
+                  disabled={guideStep === 0}
+                  onClick={() => {
+                    if (guideStep > 0) {
+                      playBeep(493.88, 0.08);
+                      setGuideStep(prev => prev - 1);
+                    }
+                  }}
+                  className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                    guideStep === 0 
+                    ? 'text-slate-300 pointer-events-none' 
+                    : 'text-slate-600 hover:bg-slate-200 hover:text-slate-900 bg-white border border-slate-200 shadow-2xs'
+                  }`}
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" /> 이전
+                </button>
+
+                {/* Center dots navigation guide */}
+                <div className="flex items-center gap-1.5">
+                  {guideSlides.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => {
+                        playBeep(440 + idx * 40, 0.06);
+                        setGuideStep(idx);
+                      }}
+                      className={`h-2 rounded-full transition-all cursor-pointer ${
+                        guideStep === idx 
+                        ? 'w-6 bg-amber-500' 
+                        : 'w-2 bg-slate-300 hover:bg-slate-400'
+                      }`}
+                      title={`${idx + 1}번째 정보로 가기`}
+                    />
+                  ))}
+                </div>
+
+                {/* Right forward or complete buttons */}
+                {guideStep < guideSlides.length - 1 ? (
+                  <button
+                    onClick={() => {
+                      playBeep(523.25 + guideStep * 30, 0.08);
+                      setGuideStep(prev => prev + 1);
+                    }}
+                    className="flex items-center gap-1 px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold cursor-pointer transition-all shadow-xs"
+                  >
+                    다음 <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      playBeep(659.25, 0.12);
+                      setIsGuideOpen(false);
+                    }}
+                    className="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl text-xs font-black cursor-pointer transition-all shadow-xs flex items-center gap-1 hover:scale-[1.02]"
+                  >
+                    확인 완료 👌
+                  </button>
+                )}
+
+              </div>
+
+            </div>
+          </div>
+        );
+      })()}
 
       {/* CUSTOM POPUP CONFIRM & ALERT DESIGN PORTAL */}
       {dialog.isOpen && (

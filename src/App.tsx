@@ -3,7 +3,7 @@ import {
   Trophy, Play, Pause, RotateCcw, Trash2, Users, Settings, 
   ChevronRight, ChevronLeft, X, BookOpen, Download, HelpCircle, ShieldAlert, Sparkles, 
   Check, Plus, Minus, Lock, Unlock, Eye, EyeOff, Award, 
-  Hourglass, Flame, EggOff, ExternalLink, RefreshCw, Ticket
+  Hourglass, Flame, EggOff, ExternalLink, RefreshCw, Ticket, Youtube
 } from 'lucide-react';
 import { GameState, Team, RoundLog, TicketVote } from './types';
 
@@ -1333,10 +1333,22 @@ export default function App() {
                       setGuideStep(0);
                       setIsGuideOpen(true);
                     }}
-                    className="pixel-shadow-btn flex-1 py-4 bg-slate-100 hover:bg-white text-slate-950 font-bold text-lg rounded-xl border-4 border-slate-950 transition-all cursor-pointer flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98]"
+                    className="pixel-shadow-btn flex-[0.8] py-4 bg-slate-100 hover:bg-white text-slate-950 font-bold text-base rounded-xl border-4 border-slate-950 transition-all cursor-pointer flex items-center justify-center gap-1.5 hover:scale-[1.02] active:scale-[0.98]"
                   >
                     📖 사용설명서
                   </button>
+                  <a
+                    href="https://youtu.be/AMSCC7L1eTA"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => {
+                      playBeep(659.25, 0.12);
+                    }}
+                    className="pixel-shadow-btn flex-[0.4] py-4 bg-red-600 hover:bg-red-500 text-white font-bold text-lg rounded-xl border-4 border-slate-950 transition-all cursor-pointer flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98]"
+                    title="유튜브 영상 시청"
+                  >
+                    <Youtube className="w-6 h-6 text-white" />
+                  </a>
                 </div>
               </div>
 
